@@ -225,7 +225,7 @@ function solveFrontiers(board, frontiers, size, totalMines) {
     log("remainingMines", remainingMines);
 
     const tasks = frontiers.map(f =>
-        f.length <= 50
+        f.length <= 30
             ? bruteForceFrontier(board, f, size, remainingMines)
             : monteCarloFrontier(board, f, size, remainingMines)
     );
