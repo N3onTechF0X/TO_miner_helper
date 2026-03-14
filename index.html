@@ -14,11 +14,12 @@
             margin: 0;
             padding: 20px;
             color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        h2 {
-            margin: 5px;
-        }
+        h2 { margin: 5px; }
 
         #board {
             display: inline-block;
@@ -28,9 +29,7 @@
             border-radius: 0.75rem;
         }
 
-        .row {
-            display: flex;
-        }
+        .row { display: flex; }
 
         .cell {
             margin: 3px;
@@ -52,67 +51,30 @@
             align-items: center;
         }
 
-        .cell.number-0 {
-            background: transparent;
-            color: transparent;
-        }
+        .cell.number-0 { background: transparent; color: transparent; }
+        .cell.number-1 { color: #ffffff; }
+        .cell.number-2 { color: #ffff00; }
+        .cell.number-3 { color: #00ff00; }
+        .cell.number-4 { color: #00eaff; }
+        .cell.number-5 { color: #ff65ff; }
 
-        .cell.number-1 {
-            color: #ffffff;
-        }
-
-        .cell.number-2 {
-            color: #ffff00;
-        }
-
-        .cell.number-3 {
-            color: #00ff00;
-        }
-
-        .cell.number-4 {
-            color: #ae00ff;
-        }
-
-        .cell.number-5 {
-            color: #ff55ff;
-        }
-
-        .cell.number-6 {
-            color: #ffaa00;
-        }
-
-        .cell.number-7 {
-            color: #55fff9;
-        }
-
-        .cell.number-8 {
-            color: #b86dff;
-        }
-
-        .cell.unknown {
-            opacity: 0.6;
-        }
-
-        .cell.percent {
-            font-size: 12px;
-        }
-
+        .cell.unknown { opacity: 0.6; }
+        .cell.percent { font-size: 12px; }
         .cell.safe {
             background: rgba(0, 255, 0, 0.5);
             border: 1px solid #a4ffa9;
             box-shadow: inset 0 2px 10px 0 rgba(173, 255, 164, 0.75);
         }
-
         .cell.danger {
-            background:#ffbc51;
+            background: rgba(255, 221, 0, 0.5);
+            border: 1px solid #fff3a4;
+            box-shadow: inset 0 2px 10px 0 rgba(255, 229, 164, 0.75);
         }
-
         .cell.mine {
             background: rgba(255, 0, 0, 0.5);
             border: 1px solid #ffa4a4;
             box-shadow: inset 0 2px 10px 0 rgba(255, 164, 164, 0.75);
         }
-
         .cell.mine img {
             max-width: 60%;
             max-height: 60%;
@@ -120,21 +82,17 @@
             margin: auto;
         }
 
-        .controls {
-            margin: 10px;
-        }
-
+        .controls { margin: 10px; }
         select {
             padding: 6px 10px;
             font-size: 14px;
             border-radius: 4px;
         }
-
         button {
             padding: 6px 12px;
             margin-left: 6px;
             border-radius: 4px;
-            cursor: pointer;
+            cursor: pointer; 
         }
 
         #info {
@@ -144,13 +102,39 @@
             color: #ff6666;
         }
 
-        #cellLegend {
-            display: inline-block;
+        #instructions, #cellLegend {
             text-align: left;
-            margin-top: 15px;
-            border: 0.125rem solid rgba(191, 213, 255, 0.75);
-            padding: 10px;
+            max-width: 600px;
+            width: 100%;
+            background: rgba(15, 50, 78, 0.8);
+            padding: 15px 20px;
             border-radius: 0.75rem;
+            border: 0.125rem solid rgba(191, 213, 255, 0.75);
+            margin-top: 15px;
+            color: #fff;
+        }
+
+        #instructions h3 {
+            margin-top: 0;
+            font-size: 18px;
+            text-align: center;
+            color: #a4c9ff;
+        }
+
+        #instructions ol { padding-left: 20px; }
+        #instructions li { margin-bottom: 8px; }
+        #instructions code {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "Comfortaa", monospace;
+            font-weight: bold;
+        }
+
+        #cellLegend {
+            display: flex;
+            flex-direction: column;
+            align-items: left;
         }
 
         #cellLegend .row {
@@ -159,9 +143,7 @@
             margin-bottom: 5px;
         }
 
-        #cellLegend .row .cell {
-            margin-right: 10px;
-        }
+        #cellLegend .row .cell { margin-right: 10px; }
     </style>
 </head>
 
@@ -177,10 +159,26 @@
             <option value="5">5) Мамонт (11×11)</option>
         </select>
         <button id="resetBtn">Сброс</button>
+        <button id="solveBtn">Анализ</button>
     </div>
     <div id="board"></div>
     <div id="info"></div>
+    <div id="instructions">
+        <h3>Как пользоваться минёр-помощником</h3>
+        <ol>
+            <li>Нажимайте <code>ЛКМ</code> на клетку, чтобы изменить её состояние по следующей последовательности: <code>не открытая → пустая → 1 → 2 → 3 → 4 → 5 → 6 → 7 → 8 → мина</code>.</li>
+            <li>Нажимайте <code>ПКМ</code> на клетку, чтобы изменить её состояние в обратном порядке.</li>
+            <li>Обязательно открывайте пустые клетки (они отображаются более темным цветом), иначе помощник не сможет правильно определить мины.</li>
+            <li>Выбирайте уровень игры в выпадающем списке, соответствующий вашей доске в игре.</li>
+            <li>После заполнения поля или обновления состояния нажмите кнопку <code>Анализ</code>, чтобы увидеть безопасные клетки и вероятные мины.</li>
+            <li>Используйте кнопку <code>Сброс</code>, чтобы начать с пустого поля.</li>
+        </ol>
+    </div>
     <div id="cellLegend">
+        <div class="row">
+            <div class="cell unknown"></div>
+            Не открытая клетка
+        </div>
         <div class="row">
             <div class="cell number-0"></div>
             Пустая клетка (рядом нет мин)
@@ -188,10 +186,6 @@
         <div class="row">
             <div class="cell">X</div>
             Рядом X мин
-        </div>
-        <div class="row">
-            <div class="cell unknown"></div>
-            Не открытая клетка
         </div>
         <div class="row">
             <div class="cell unknown safe"></div>
@@ -203,10 +197,10 @@
         </div>
         <div class="row">
             <div class="cell unknown danger"></div>
-            Нельзя сказать точно есть ли мина, но тут шанс на неё не попасть больше
+            Лучший шанс, но не гарантированный
         </div>
     </div>
-    <script src="main.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 
 </html>
